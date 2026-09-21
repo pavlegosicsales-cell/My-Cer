@@ -31,6 +31,8 @@
 
   --maxw: 1200px;
   --ease: cubic-bezier(.16,1,.3,1);
+  /* expo-out je za pokret; za boje je preostar (80% promene u prvih 50ms) */
+  --ease-smooth: cubic-bezier(.4,0,.2,1);
   --dur: .8s;
 
   --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='192' height='192'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='192' height='192' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -112,7 +114,7 @@ h5,.h5{ font-family:var(--font-display); font-weight:400; font-size:20px; line-h
   gap:10px; padding:14px 18px; border-radius:0; overflow:clip; cursor:pointer;
   background:var(--accent); border:1px solid #FFC93F; color:#12181D;
   font-size:15px; font-weight:500; letter-spacing:.04em; text-transform:uppercase; line-height:1.3;
-  transition:background-color .35s var(--ease), border-color .35s var(--ease), color .35s var(--ease);
+  transition:background-color .4s var(--ease-smooth), border-color .4s var(--ease-smooth), color .4s var(--ease-smooth);
 }
 /* Hover: podloga postaje bela, border ostaje brend žut, tekst ostaje taman */
 .btn:hover{ background:#FFFFFF; border-color:#FFC93F }
@@ -127,7 +129,7 @@ h5,.h5{ font-family:var(--font-display); font-weight:400; font-size:20px; line-h
   position:absolute; z-index:0; border-radius:999px; filter:blur(10px); aspect-ratio:1;
   will-change:transform;
   background:radial-gradient(50% 50% at 50% 50%, #FFFFFF 0%, #FFF3D0 42%, var(--accent) 100%);
-  transition:top .8s var(--ease), left .8s var(--ease), right .8s var(--ease), opacity .8s var(--ease);
+  transition:top .8s var(--ease), left .8s var(--ease), right .8s var(--ease), opacity .4s var(--ease-smooth);
 }
 /* Framer ih drži preko top+bottom para; naše dugme je 50px (ne 48), pa
    aspect-ratio:1 daje isti kvadrat bez deformacije u elipsu. */
@@ -496,11 +498,9 @@ h5,.h5{ font-family:var(--font-display); font-weight:400; font-size:20px; line-h
 .pmarq::before{ left:0; background:linear-gradient(90deg,var(--bg),transparent) }
 .pmarq::after{ right:0; background:linear-gradient(270deg,var(--bg),transparent) }
 .pmarq__track{ display:flex; gap:48px; width:max-content; animation:marquee 64s linear infinite }
-/* Na desktopu su telefoni krupni i kadrirani na gornji deo poruke, pa u
-   kadar staju ~2.5 komada — traka uvek ima sta da uvuce sa strane umesto
-   da sva 4 mockupa stoje na ekranu sve vreme. Dno se gubi u fade. */
-.pmarq img{ width:400px; height:560px; flex:none; object-fit:cover; object-position:center top;
-  -webkit-mask:linear-gradient(0deg, transparent 0%, #000 20%); mask:linear-gradient(0deg, transparent 0%, #000 20%) }
+/* Cela slika — nista se ne isece da bi sve poruke ostale citljive.
+   Krupnije nego ranije (250px) pa u kadar staju ~2.8 od 4 mockupa. */
+.pmarq img{ width:400px; height:auto; flex:none }
 .pmarq:hover .pmarq__track{ animation-play-state:paused }
 
 /* ==========================================================================
@@ -638,8 +638,7 @@ h5,.h5{ font-family:var(--font-display); font-weight:400; font-size:20px; line-h
   .foot .rail{ padding:60px 20px 180px }
   .foot__news{ width:100% }
   .foot__cols{ gap:40px }
-  /* Na telefonu ostaje kako je bilo: cela slika, bez kadriranja */
-  .pmarq img{ width:190px; height:auto; object-fit:fill; -webkit-mask:none; mask:none }
+  .pmarq img{ width:190px }
   .pmarq__track{ gap:28px }
   .video__head{ padding:0 20px 28px }
   .signup{ padding:22px }
