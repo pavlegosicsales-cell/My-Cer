@@ -7,7 +7,6 @@
     "respond_in": "srpski",
     "site_copy_language": "srpski (latinica); Google recenzije stižu u ćirilici"
   },
-
   "project": {
     "name": "MyCER — redizajn stranice /obuka-za-dispecere/",
     "type": "Vizuelni redizajn jedne postojeće stranice (ne ceo sajt, ne novi sajt)",
@@ -16,7 +15,6 @@
     "workflow_system": "Trostepeni skill sistem: 01 client-info-gathering (ZAVRŠEN) → 02 website-build-rules (PRESKOČEN, radili smo custom build) → 03 form-backend-setup (NIJE POKRENUT)",
     "phase": "Redizajn isporučen, u fazi iteracije/ispravki"
   },
-
   "hard_constraints": [
     {
       "rule": "Copy se NE menja",
@@ -37,7 +35,6 @@
       "detail": "Eksplicitna instrukcija korisnika: 'gde ne mozes da stavis krstene slike stavi placeholder pa cemo dopuniti'"
     }
   ],
-
   "design_source": {
     "template": "Tradelab — Online Course & Coaching Template",
     "url": "https://tradelabtemplate.framer.website/",
@@ -47,7 +44,6 @@
     "teardown_doc": "TEARDOWN-tradelab.md (urađen preko site-teardown skilla)",
     "note": "Rebuild je hand-written HTML/CSS/JS sa dizajn jezikom template-a, ne redistribucija Framer template-a."
   },
-
   "design_system": {
     "token_mapping_tradelab_to_mycer": {
       "#ce4901 (primary accent)": "#FFB606",
@@ -90,7 +86,6 @@
     "max_width": "1200px",
     "breakpoints": "desktop >1200 · tablet 810-1199 · mobile <810"
   },
-
   "business_facts": {
     "name": "MyCER (Google Business: MyCER consulting)",
     "founded": 2013,
@@ -126,7 +121,6 @@
       "write_review": "https://search.google.com/local/writereview?placeid=ChIJk20MZePKW0cR7Jr8LrGxxXI"
     }
   },
-
   "section_order": [
     "0. Announcement bar (marquee — dodat u redizajnu, koristi postojeći copy o USA20/besplatnom poglavlju)",
     "1. Nav — logo, pulse+telefon, Početna/Kursevi(dropdown)/Blog, WhatsApp+Viber+nalog+korpa, burger",
@@ -151,12 +145,11 @@
     "20. FINALNI CTA — forma + 'ZAKAŽI BESPLATNE KONSULTACIJE'",
     "21. FOOTER — podrška, korisnički servis, blog, social, payment badges, giant wordmark"
   ],
-
   "files": {
     "deliverable": {
-      "redesign/index.html": "~59 KB — sve 21 sekcija, copy verbatim",
-      "redesign/styles.css": "~37 KB — ceo dizajn sistem",
-      "redesign/app.js": "~7 KB — Lenis, scroll reveal, count-up, akordeon, Vimeo facade, countdown, mobilni meni, marquee dupliranje"
+      "index.html": "~59 KB - sve 21 sekcija, copy verbatim (u root-u repoa zbog Vercel deploya)",
+      "styles.css": "~42 KB - ceo dizajn sistem",
+      "app.js": "~7 KB - Lenis, scroll reveal, count-up, akordeon, Vimeo facade, countdown, mobilni meni, marquee dupliranje"
     },
     "documentation": {
       "context.md": "Glavni brief — biznis, paleta, mapa sekcija, Vimeo tabela, assets, social nalozi, redizajn status",
@@ -166,7 +159,8 @@
       "CONTEXT-PROFILE.json": "ovaj fajl"
     },
     "config": {
-      ".claude/launch.json": "python -m http.server 5178, url http://localhost:5178"
+      ".claude/launch.json": "python -m http.server 5178, url http://localhost:5178",
+      "vercel.json": "static deploy, cleanUrls"
     },
     "assets": {
       "images/logo/": "mycer-logo-black.png (wordmark 3049×827), mycer-logo-white.png (GENERISAN), mycer-mark-black.png (znak 512×512), mycer-mark-white.png (GENERISAN)",
@@ -177,7 +171,6 @@
       "images/reference/": "branding.json (Firecrawl branding analiza)"
     }
   },
-
   "vimeo": {
     "channel": "https://vimeo.com/user164736130 (MyCER)",
     "critical_gotcha": "6 testimonijala je na Vimeo-u ograničeno na domen my-cer.com (Privacy → Where can this be embedded → Specific domains). Van tog domena player vraća 'Because of its privacy settings, this video cannot be played here.' Hash ?h= dozvoljava gledanje na vimeo.com ali NE otključava embed. Ovo NIJE bug u kodu — provereno učitavanjem player URL-a direktno.",
@@ -187,26 +180,94 @@
     ],
     "fallback_implemented": "app.js: ALLOWED_HOSTS = ['my-cer.com','www.my-cer.com']. Van tih hostova, 1.5s posle klika, pojavi se .vfallback traka sa linkom na vimeo.com. Na produkciji se NIKAD ne prikaže.",
     "videos": [
-      { "role": "glavni", "title": "Zbog čega MyCER KURS ZA DISPEČERA kamiona u USA", "id": "863725527", "hash": null, "public": true, "embed_anywhere": true },
-      { "role": "testimonial", "name": "Majda", "id": "700456815", "hash": "c35dc68ea7", "duration": "0:42", "embed_anywhere": false },
-      { "role": "testimonial", "name": "Kristina Topalović", "id": "674100289", "hash": "499c10d63b", "duration": "0:31", "embed_anywhere": false },
-      { "role": "testimonial", "name": "Ognjen Trejgut", "id": "687054971", "hash": "05774b8821", "duration": "0:26", "embed_anywhere": false },
-      { "role": "testimonial", "name": "Natalia Colombia", "id": "790888248", "hash": "38027fe12b", "duration": "0:52", "embed_anywhere": false },
-      { "role": "testimonial", "name": "Nemanja Suzić", "id": "759215878", "hash": "2897a5a82a", "duration": "0:45", "embed_anywhere": false },
-      { "role": "testimonial", "name": "Aleksandar Ristovski", "id": "736500092", "hash": "f2c321ce5a", "duration": "0:23", "embed_anywhere": false }
+      {
+        "role": "glavni",
+        "title": "Zbog čega MyCER KURS ZA DISPEČERA kamiona u USA",
+        "id": "863725527",
+        "hash": null,
+        "public": true,
+        "embed_anywhere": true
+      },
+      {
+        "role": "testimonial",
+        "name": "Majda",
+        "id": "700456815",
+        "hash": "c35dc68ea7",
+        "duration": "0:42",
+        "embed_anywhere": false
+      },
+      {
+        "role": "testimonial",
+        "name": "Kristina Topalović",
+        "id": "674100289",
+        "hash": "499c10d63b",
+        "duration": "0:31",
+        "embed_anywhere": false
+      },
+      {
+        "role": "testimonial",
+        "name": "Ognjen Trejgut",
+        "id": "687054971",
+        "hash": "05774b8821",
+        "duration": "0:26",
+        "embed_anywhere": false
+      },
+      {
+        "role": "testimonial",
+        "name": "Natalia Colombia",
+        "id": "790888248",
+        "hash": "38027fe12b",
+        "duration": "0:52",
+        "embed_anywhere": false
+      },
+      {
+        "role": "testimonial",
+        "name": "Nemanja Suzić",
+        "id": "759215878",
+        "hash": "2897a5a82a",
+        "duration": "0:45",
+        "embed_anywhere": false
+      },
+      {
+        "role": "testimonial",
+        "name": "Aleksandar Ristovski",
+        "id": "736500092",
+        "hash": "f2c321ce5a",
+        "duration": "0:23",
+        "embed_anywhere": false
+      }
     ]
   },
-
   "decisions_made": [
-    { "decision": "Custom HTML/CSS/JS umesto Skilla 02", "reason": "Skill 02 gradi generički klijentski sajt; ovde je tražen pixel-level redizajn po tuđem dizajn sistemu" },
-    { "decision": "Sora + Inter umesto Montserrat + Roboto", "reason": "Tipografija je deo dizajna koji se kopira. Povratak je jedna CSS varijabla." },
-    { "decision": "Izbačena plava #1863DC iz postojeće palete", "reason": "Elementor default, bila je u konfliktu sa žuto/crno identitetom. Nije deo brend palete." },
-    { "decision": "Google recenzije — kurirana lista 6 pozitivnih", "reason": "Prva recenzija u originalnom widgetu je negativna (Stefani Skorić) i dominira prvim utiskom. Badge i dalje nosi pravu ocenu 5.0/55 sa linkom na pun profil, pa je i dalje iskreno. ODLUKA JOŠ NIJE POTVRĐENA OD KORISNIKA." },
-    { "decision": "Announcement bar dodat", "reason": "Deo Tradelab nav komponente. Popunjen postojećim copy-jem (USA20, prvo poglavlje besplatno, 30 dana povrat, rate) — bez novog teksta." },
-    { "decision": "Gradijentne pozadine kao CSS radial-gradient", "reason": "Framer je koristio PNG gradijente; CSS je lakši i u brend boji" },
-    { "decision": "Countdown je rolling 10-dnevni prozor u localStorage", "reason": "Isto ponašanje kao postojeći tajmer na sajtu" }
+    {
+      "decision": "Custom HTML/CSS/JS umesto Skilla 02",
+      "reason": "Skill 02 gradi generički klijentski sajt; ovde je tražen pixel-level redizajn po tuđem dizajn sistemu"
+    },
+    {
+      "decision": "Sora + Inter umesto Montserrat + Roboto",
+      "reason": "Tipografija je deo dizajna koji se kopira. Povratak je jedna CSS varijabla."
+    },
+    {
+      "decision": "Izbačena plava #1863DC iz postojeće palete",
+      "reason": "Elementor default, bila je u konfliktu sa žuto/crno identitetom. Nije deo brend palete."
+    },
+    {
+      "decision": "Google recenzije — kurirana lista 6 pozitivnih",
+      "reason": "Prva recenzija u originalnom widgetu je negativna (Stefani Skorić) i dominira prvim utiskom. Badge i dalje nosi pravu ocenu 5.0/55 sa linkom na pun profil, pa je i dalje iskreno. ODLUKA JOŠ NIJE POTVRĐENA OD KORISNIKA."
+    },
+    {
+      "decision": "Announcement bar dodat",
+      "reason": "Deo Tradelab nav komponente. Popunjen postojećim copy-jem (USA20, prvo poglavlje besplatno, 30 dana povrat, rate) — bez novog teksta."
+    },
+    {
+      "decision": "Gradijentne pozadine kao CSS radial-gradient",
+      "reason": "Framer je koristio PNG gradijente; CSS je lakši i u brend boji"
+    },
+    {
+      "decision": "Countdown je rolling 10-dnevni prozor u localStorage",
+      "reason": "Isto ponašanje kao postojeći tajmer na sajtu"
+    }
   ],
-
   "bugs_fixed": [
     {
       "bug": "Dugmad visoka 126–156px umesto 50px",
@@ -229,18 +290,40 @@
       "fix": "https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"
     }
   ],
-
   "open_items": [
-    { "priority": "high", "item": "Odluka o negativnoj Google recenziji (Stefani Skorić) — prikazati je ili ne. Detalji i 3 opcije u google-reviews.md" },
-    { "priority": "high", "item": "Hero pozadinska fotografija u punoj rezoluciji — trenutno CSS radial-gradient. Originalna je CSS background na starom sajtu, nije u uploads folderu." },
-    { "priority": "high", "item": "Odluka: da li redizajn ide kao WordPress/Elementor tema ili standalone build? Menja ceo integracioni pristup — postojeći sajt ima WooCommerce korpu, korisničke naloge i kartično plaćanje preko Intese." },
-    { "priority": "medium", "item": "Payment badge logotipi (Maestro, MC, DinaCard, Visa, Amex, Intesa, SecureCode, Visa Secure) — trenutno tekstualni <b> elementi" },
-    { "priority": "medium", "item": "Avatari u social proof bloku — trenutno kadrovi iz video thumbnailova" },
-    { "priority": "medium", "item": "Brend ikone za 8 benefita — trenutno generičke line ikone" },
-    { "priority": "low", "item": "Forme (registracija + newsletter) nisu povezane sa backendom → to je Skill 03 (form-backend-setup)" },
-    { "priority": "low", "item": "LinkedIn je pročitan, ali nema slika/assets-a odatle" }
+    {
+      "priority": "high",
+      "item": "Odluka o negativnoj Google recenziji (Stefani Skorić) — prikazati je ili ne. Detalji i 3 opcije u google-reviews.md"
+    },
+    {
+      "priority": "high",
+      "item": "Hero pozadinska fotografija u punoj rezoluciji — trenutno CSS radial-gradient. Originalna je CSS background na starom sajtu, nije u uploads folderu."
+    },
+    {
+      "priority": "high",
+      "item": "Odluka: da li redizajn ide kao WordPress/Elementor tema ili standalone build? Menja ceo integracioni pristup — postojeći sajt ima WooCommerce korpu, korisničke naloge i kartično plaćanje preko Intese."
+    },
+    {
+      "priority": "medium",
+      "item": "Payment badge logotipi (Maestro, MC, DinaCard, Visa, Amex, Intesa, SecureCode, Visa Secure) — trenutno tekstualni <b> elementi"
+    },
+    {
+      "priority": "medium",
+      "item": "Avatari u social proof bloku — trenutno kadrovi iz video thumbnailova"
+    },
+    {
+      "priority": "medium",
+      "item": "Brend ikone za 8 benefita — trenutno generičke line ikone"
+    },
+    {
+      "priority": "low",
+      "item": "Forme (registracija + newsletter) nisu povezane sa backendom → to je Skill 03 (form-backend-setup)"
+    },
+    {
+      "priority": "low",
+      "item": "LinkedIn je pročitan, ali nema slika/assets-a odatle"
+    }
   ],
-
   "copy_inconsistencies_logged": {
     "note": "Evidentirano, NE dirati dok je copy zamrznut. Za fazu posle redizajna.",
     "items": [
@@ -251,26 +334,35 @@
       "'Bonus #7' se pojavljuje dva puta u value stacku (Mentorski Program i Redovno Ažuriranje) — greška u numeraciji na originalu"
     ]
   },
-
   "how_to_run": {
     "server": "cd C:\\Users\\pavle\\Desktop\\MyCER && python -m http.server 5178",
-    "url": "http://localhost:5178/redesign/index.html",
-    "warning": "NE otvarati index.html direktno kao file:// — relativni putevi i eksterni resursi se ponašaju drugačije"
+    "url": "http://localhost:5178/",
+    "warning": "NE otvarati index.html direktno kao file:// - relativni putevi i eksterni resursi se ponasaju drugacije.",
+    "note": "Fajlovi su premesteni iz redesign/ u root 2026-09-21 jer je Vercel vracao 404 na root-u; putanje slika ../images/ -> images/."
   },
-
   "verified_state": {
-    "tested_viewports": ["1440×900", "375×812"],
+    "tested_viewports": [
+      "1440×900",
+      "375×812"
+    ],
     "horizontal_overflow": "nema (375/375)",
     "console_errors": "nema",
     "page_height_desktop": "~23.000px (original je bio 19.979px)",
-    "counts": { "scroll_reveal_elements": 77, "accordion_items": 17, "video_facades": 7 },
+    "counts": {
+      "scroll_reveal_elements": 77,
+      "accordion_items": 17,
+      "video_facades": 7
+    },
     "all_buttons": "50px visine"
   },
-
   "working_style_notes": [
     "Korisnik piše kratko, direktno, bez interpunkcije. Odgovarati na srpskom, konkretno, bez uvoda.",
     "Korisnik očekuje da se proveri stvarno stanje (otvoriti browser, izmeriti, testirati) pre nego što se tvrdi da nešto radi.",
     "Korisnik je rekao: 'kada zavrsis sigurno cemo imati mnogo promena da pravimo al nema veze' — očekuje iterativni rad.",
     "Firecrawl CLI je instaliran (v1.20.0) i radi. Chrome ekstenzija je povezana na profil pavlegosic9, ulogovan na LinkedIn."
-  ]
+  ],
+  "repo": {
+    "url": "https://github.com/pavlegosicsales-cell/My-Cer",
+    "branch": "main"
+  }
 }
