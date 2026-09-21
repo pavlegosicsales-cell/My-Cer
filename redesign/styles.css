@@ -1,0 +1,657 @@
+/* ==========================================================================
+   MyCER — redizajn stranice /obuka-za-dispecere/
+   Dizajn jezik: Tradelab (Framer) · Paleta: MyCER (nepromenjena)
+   Copy i raspored sekcija: identični postojećem sajtu
+   ========================================================================== */
+
+/* ---------- Tokens ---------- */
+:root{
+  /* MyCER paleta — NE MENJATI */
+  --accent:        #FFB606;
+  --accent-2:      #FBA919;
+  --accent-soft:   rgba(255,182,6,.20);
+  --accent-dim:    rgba(255,182,6,.10);
+
+  --bg:            #0E1216;
+  --panel:         #1A2E3B;
+  --panel-2:       #131C23;
+
+  --line:          #1E2A33;
+  --line-strong:   #2A3B47;
+  --line-hair:     rgba(255,255,255,.10);
+  --line-nav:      rgba(255,255,255,.12);
+
+  --text:          #FFFFFF;
+  --text-body:     #B8B8B8;
+  --text-muted:    #8A9299;
+
+  /* Tipografija — zameni --font-display sa "Montserrat" ako se vraćamo na brend font */
+  --font-display: "Sora", "Montserrat", sans-serif;
+  --font-body:    "Inter", "Roboto", sans-serif;
+
+  --maxw: 1200px;
+  --ease: cubic-bezier(.16,1,.3,1);
+  --dur: .8s;
+
+  --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='192' height='192'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='192' height='192' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- Reset ---------- */
+*,*::before,*::after{ box-sizing:border-box }
+html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth }
+html.lenis{ height:auto }
+.lenis.lenis-smooth{ scroll-behavior:auto !important }
+.lenis.lenis-stopped{ overflow:hidden }
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:var(--font-body); font-size:16px; line-height:1.5;
+  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
+}
+img,svg{ display:block; max-width:100% }
+a{ color:inherit; text-decoration:none }
+button,input{ font:inherit; color:inherit }
+h1,h2,h3,h4,h5,p,figure,ul,ol{ margin:0; padding:0 }
+ul,ol{ list-style:none }
+
+/* ---------- Tipografija ---------- */
+h1,.h1{ font-family:var(--font-display); font-weight:400; font-size:90px; line-height:.9; letter-spacing:-.07em }
+h2,.h2{ font-family:var(--font-display); font-weight:400; font-size:54px; line-height:1.1; letter-spacing:-.05em }
+h3,.h3{ font-family:var(--font-display); font-weight:400; font-size:30px; line-height:1.1; letter-spacing:-.05em }
+h5,.h5{ font-family:var(--font-display); font-weight:400; font-size:20px; line-height:1;   letter-spacing:.02em }
+
+.lead   { font-size:18px; line-height:1.5; color:var(--text-body) }
+.body   { font-size:16px; line-height:1.5; color:var(--text-body) }
+.small  { font-size:14px; line-height:1.5; color:var(--text-body) }
+.tiny   { font-size:12px; line-height:1.5; color:var(--text) }
+.eyebrow{ font-size:15px; line-height:18px; font-weight:600; text-transform:uppercase; color:var(--accent) }
+.label  { font-size:15px; line-height:1;    font-weight:600; text-transform:uppercase; letter-spacing:.02em; color:var(--text-muted) }
+.accent { color:var(--accent) }
+.center { text-align:center }
+
+/* ---------- Rail grid (potpis dizajna) ---------- */
+.sec{ position:relative; width:100%; border-bottom:1px solid var(--line-strong); overflow:clip }
+.rail{
+  position:relative; width:100%; max-width:var(--maxw); margin-inline:auto;
+  border-left:1px solid var(--line-strong); border-right:1px solid var(--line-strong);
+}
+.rail--hair{ border-color:var(--line-nav) }
+.pad{ padding:80px 40px }
+.pad-lg{ padding:140px 40px 100px }
+
+/* ---------- Noise ---------- */
+.noise{
+  position:absolute; inset:0; pointer-events:none; z-index:0;
+  background-image:var(--noise); background-repeat:repeat; background-size:192px auto;
+  opacity:.10;
+}
+.noise--soft{ opacity:.04 }
+
+/* ---------- Glow pozadine (zamena za Framer gradient PNG) ---------- */
+.glow-hero{
+  position:absolute; inset:0; pointer-events:none; z-index:0;
+  background:
+    radial-gradient(900px 520px at 50% -8%, rgba(255,182,6,.30), transparent 62%),
+    radial-gradient(700px 480px at 12% 8%, rgba(251,169,25,.14), transparent 60%),
+    radial-gradient(760px 520px at 88% 4%, rgba(26,46,59,.65), transparent 65%);
+}
+.glow-band{
+  position:absolute; inset:0; pointer-events:none; z-index:0;
+  background:radial-gradient(860px 420px at 50% 100%, rgba(255,182,6,.16), transparent 68%);
+}
+.glow-side{
+  position:absolute; inset:0; pointer-events:none; z-index:0;
+  background:radial-gradient(700px 520px at 8% 40%, rgba(255,182,6,.20), transparent 62%);
+}
+
+/* ==========================================================================
+   Dugmad — signature komponenta
+   ========================================================================== */
+.btn{
+  position:relative; display:inline-flex; align-items:center; justify-content:center;
+  gap:10px; padding:14px 18px; border-radius:0; overflow:clip; cursor:pointer;
+  background:var(--accent); border:1px solid #FFC93F; color:#12181D;
+  font-size:15px; font-weight:500; letter-spacing:.04em; text-transform:uppercase; line-height:1.3;
+  transition:background-color .35s var(--ease), border-color .35s var(--ease), color .35s var(--ease);
+}
+/* Hover: podloga postaje bela, border ostaje brend žut, tekst ostaje taman */
+.btn:hover{ background:#FFFFFF; border-color:#FFC93F }
+.btn:hover .btn__glow{ opacity:0 }
+.btn__i{ position:relative; z-index:2; width:15px; height:15px; background:#12181D;
+  -webkit-mask:var(--arrow) no-repeat center/contain; mask:var(--arrow) no-repeat center/contain }
+.btn > span:not(.btn__glow){ position:relative; z-index:2 }
+/* 1:1 sa Tradelab source-om: .framer-w69u0d / .framer-1hqe26l.
+   Tamo je blob #cecece na #ce4901 podlozi (~3x svetliji); naša podloga je
+   svetla žuta, pa centar mora do bele da bi se potez uopšte video. */
+.btn__glow{
+  position:absolute; z-index:0; border-radius:999px; filter:blur(10px); aspect-ratio:1;
+  will-change:transform;
+  background:radial-gradient(50% 50% at 50% 50%, #FFFFFF 0%, #FFF3D0 42%, var(--accent) 100%);
+  transition:top .8s var(--ease), left .8s var(--ease), right .8s var(--ease), opacity .8s var(--ease);
+}
+/* Framer ih drži preko top+bottom para; naše dugme je 50px (ne 48), pa
+   aspect-ratio:1 daje isti kvadrat bez deformacije u elipsu. */
+.btn__glow--a{ width:92px; top:-5px; right:-35px }
+.btn__glow--b{ width:96px; top:-48px; left:-44px }
+/* Hover: blobovi se SAMO pomeraju, veličina ostaje 92/96 */
+.btn:hover .btn__glow--a{ top:-2px; right:-46px }
+.btn:hover .btn__glow--b{ top:-52px; left:-48px }
+
+.btn--ghost{
+  background:transparent; border:1px solid rgba(255,255,255,.2); color:var(--text);
+}
+/* Ghost nema žutu podlogu — na belom hoveru tekst mora da potamni da bi se video */
+.btn--ghost:hover{ background:#FFFFFF; border-color:#FFC93F; color:#12181D }
+.btn--ghost .btn__i{ background:currentColor }
+.btn--block{ width:100%; display:flex }
+/* Na punoj širini blobovi bi isprali dugme — držimo ih kao ugaone odsjaje */
+.btn--block .btn__glow{ filter:blur(14px); opacity:.7 }
+.btn--block .btn__glow--a{ width:120px; top:-26px; right:-56px }
+.btn--block .btn__glow--b{ width:120px; top:-60px; left:-58px }
+.btn--block:hover .btn__glow{ opacity:0 }
+.btn--block:hover .btn__glow--a{ right:-62px; top:-22px }
+.btn--block:hover .btn__glow--b{ left:-64px; top:-64px }
+.btn--lg{ padding:14px 26px }
+
+:root{ --arrow:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M 8 0 L 6.59 1.41 L 12.17 7 L 0 7 L 0 9 L 12.17 9 L 6.59 14.59 L 8 16 L 16 8 Z' fill='%23000'/%3E%3C/svg%3E");
+        --check:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 21 14'%3E%3Cpath d='M 5.59 10.58 L 1.42 6.41 L 0 7.82 L 5.59 13.41 L 17.59 1.41 L 16.18 0 Z' fill='%23000'/%3E%3C/svg%3E");
+}
+
+/* ==========================================================================
+   Announcement bar
+   ========================================================================== */
+.announce{ background:var(--accent); color:#12181D; overflow:hidden; height:38px; display:flex; align-items:center }
+.announce__track{ display:flex; align-items:center; gap:20px; white-space:nowrap; will-change:transform; animation:marquee 34s linear infinite }
+.announce__item{ display:flex; align-items:center; gap:20px; font-size:14px; font-weight:500; letter-spacing:.06em; text-transform:uppercase }
+.announce__dot{ width:7px; height:7px; border-radius:999px; background:#12181D; flex:none }
+@keyframes marquee{ from{ transform:translateX(0) } to{ transform:translateX(-50%) } }
+
+/* ==========================================================================
+   Nav
+   ========================================================================== */
+.nav{ position:sticky; top:0; z-index:60; background:rgba(14,18,22,.72); backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--line-nav) }
+.nav__inner{ display:flex; align-items:center; justify-content:space-between; gap:24px;
+             height:80px; padding:0 30px; max-width:var(--maxw); margin-inline:auto;
+             border-left:1px solid var(--line-nav); border-right:1px solid var(--line-nav) }
+.nav__logo img{ height:26px; width:auto; object-fit:contain }
+.nav__right{ display:flex; align-items:center; gap:26px }
+.nav__links{ display:flex; align-items:center; gap:26px }
+.nav__link{ font-size:14px; letter-spacing:1.1px; text-transform:uppercase; transition:color .3s var(--ease) }
+.nav__link:hover{ color:var(--accent) }
+
+.nav__drop{ position:relative }
+.nav__menu{
+  position:absolute; top:calc(100% + 18px); left:50%; transform:translateX(-50%) translateY(-6px);
+  min-width:250px; background:var(--panel-2); border:1px solid var(--line-strong);
+  padding:8px 0; opacity:0; visibility:hidden; transition:all .3s var(--ease);
+}
+.nav__drop:hover .nav__menu{ opacity:1; visibility:visible; transform:translateX(-50%) translateY(0) }
+.nav__menu a{ display:block; padding:11px 18px; font-size:13px; letter-spacing:1.1px; text-transform:uppercase; color:var(--text-body); transition:.25s var(--ease) }
+.nav__menu a:hover{ background:var(--accent-dim); color:var(--accent) }
+
+.pulse{ display:flex; align-items:center; gap:8px }
+.pulse__dot{ position:relative; width:18px; height:18px; display:grid; place-items:center }
+.pulse__dot i{ width:8px; height:8px; border-radius:100%; background:#25D366; display:block }
+.pulse__dot::after{ content:""; position:absolute; width:8px; height:8px; border-radius:100%; background:#25D366; animation:pulse 2s var(--ease) infinite }
+@keyframes pulse{ 0%{ transform:scale(1); opacity:.6 } 100%{ transform:scale(3.2); opacity:0 } }
+.pulse span{ font-size:14px; letter-spacing:1.1px; text-transform:uppercase }
+
+.nav__icons{ display:flex; align-items:center; gap:14px }
+.nav__icon{ width:34px; height:34px; display:grid; place-items:center; border:1px solid var(--line-hair); transition:.3s var(--ease) }
+.nav__icon:hover{ border-color:var(--accent); color:var(--accent) }
+.nav__icon svg{ width:16px; height:16px }
+
+.burger{ display:none; width:20px; height:13px; flex-direction:column; justify-content:space-between; background:none; border:0; padding:0; cursor:pointer }
+.burger i{ display:block; height:1px; width:20px; background:#fff; transition:.35s var(--ease) }
+.nav.is-open .burger i:nth-child(1){ transform:translateY(6px) rotate(45deg) }
+.nav.is-open .burger i:nth-child(2){ opacity:0 }
+.nav.is-open .burger i:nth-child(3){ transform:translateY(-6px) rotate(-45deg) }
+
+.nav__mobile{ display:none; border-top:1px solid var(--line-nav); padding:24px 30px 32px }
+.nav.is-open .nav__mobile{ display:block }
+.nav__mobile a{ display:block; padding:12px 0; font-size:14px; letter-spacing:1.1px; text-transform:uppercase; border-bottom:1px solid var(--line) }
+.nav__mobile .nav__mobile-sub a{ padding-left:16px; color:var(--text-body) }
+
+/* ==========================================================================
+   HERO
+   ========================================================================== */
+.hero{ padding-top:0 }
+.hero .rail{ padding:110px 40px 70px; display:flex; flex-direction:column; align-items:center; gap:56px }
+.hero__text{ position:relative; z-index:2; display:flex; flex-direction:column; align-items:center; gap:22px; max-width:1120px; text-align:center }
+
+.badge{ position:relative; display:flex; align-items:center; justify-content:center; gap:26px; height:39px }
+.badge__wreath{ width:22px; height:100%; opacity:.9 }
+.badge__wreath svg{ height:100%; width:100% }
+.badge p{ font-size:12px; line-height:1.4; text-align:center; letter-spacing:.02em }
+
+.hero h1{ font-weight:600; line-height:1.14; letter-spacing:-.035em; font-size:min(86px, calc(7.5vw - 6px)) }
+.hero h1 span{ display:block; white-space:nowrap }
+.hero__sub{ max-width:620px }
+.hero__note{ font-size:13px; color:var(--text-muted) }
+
+.hero__cta{ position:relative; z-index:2; width:100%; max-width:560px }
+
+/* Registraciona forma */
+.signup{ border:1px solid var(--line-hair); background:linear-gradient(180deg, rgba(255,255,255,.03) 0%, rgba(14,18,22,.9) 100%);
+         box-shadow:inset 0 10px 40px 13px rgba(255,255,255,.02); padding:30px }
+.signup__title{ text-align:center; margin-bottom:22px }
+.signup__grid{ display:grid; gap:10px }
+.field{ position:relative; display:flex; align-items:center; border-bottom:1px solid var(--line-strong); transition:border-color .3s var(--ease) }
+.field:focus-within{ border-color:var(--accent) }
+.field input{ flex:1; background:none; border:0; outline:0; padding:14px 2px; font-size:15px; color:#fff }
+.field input::placeholder{ color:var(--text-muted) }
+.field svg{ width:16px; height:16px; color:var(--text-muted); flex:none }
+.signup .btn{ margin-top:18px }
+.signup__login{ margin-top:14px; text-align:center; font-size:13px; color:var(--text-muted) }
+.signup__login a{ color:var(--accent) }
+
+/* Social proof */
+.proof{ position:relative; z-index:2; display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap }
+.proof__pics{ display:flex; align-items:center; width:100px; position:relative; height:33px }
+.proof__pics i{ position:absolute; width:33px; height:33px; border-radius:999px; border:1px solid var(--text-body);
+                background:var(--panel) center/cover no-repeat; display:block }
+.proof__pics i:nth-child(1){ left:0 } .proof__pics i:nth-child(2){ left:23px }
+.proof__pics i:nth-child(3){ left:46px } .proof__pics i:nth-child(4){ left:67px }
+.proof p{ font-size:14px; color:var(--text-body) }
+.proof b{ color:#fff; font-weight:400 }
+
+/* ==========================================================================
+   Sekcijski naslovi
+   ========================================================================== */
+.sec-head{ display:flex; flex-direction:column; gap:24px; max-width:720px }
+.sec-head--center{ align-items:center; text-align:center; margin-inline:auto }
+/* Naslov koristi punu sirinu rail-a umesto 720px kolone */
+.sec-head--wide{ max-width:none }
+/* Dugacki naslovi: font se spusta da copy stane u najvise 3 reda */
+.h2--tight{ font-size:clamp(30px, 3.9vw, 48px) }
+.h2--long { font-size:clamp(26px, 2.7vw, 34px); line-height:1.18; letter-spacing:-.03em }
+
+/* ==========================================================================
+   Agitacija (3 bloka)
+   ========================================================================== */
+/* Bez gap-a: kartice se dodiruju, razdvaja ih samo 1px linija.
+   Negativne margine gase .pad sa strana i sa dna, pa grid ide do ivica sekcije. */
+.agit__grid{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:0;
+  margin:70px -40px -80px; border-top:1px solid var(--line-strong);
+}
+.agit__cell{
+  position:relative; overflow:clip; background:var(--bg);
+  box-shadow:inset 0 10px 40px 13px rgba(255,255,255,.02);
+  padding:50px 28px 44px; border-left:1px solid var(--line-strong);
+  display:flex; flex-direction:column; align-items:center; text-align:center; gap:20px;
+}
+.agit__cell:first-child{ border-left:0 }
+/* "Lighting" — Framer je koristio PNG; ovde radial-gradient u brend boji */
+.agit__light{
+  position:absolute; z-index:0; top:-18px; left:50%; transform:translateX(-50%);
+  width:190px; height:195px; pointer-events:none;
+  background:radial-gradient(50% 50% at 50% 28%, rgba(255,182,6,.34), rgba(255,182,6,.06) 58%, transparent 72%);
+  opacity:.9;
+}
+.agit__ico{ position:relative; z-index:1; width:115px; height:115px; color:var(--accent); flex:none }
+.agit__ico svg{ width:100%; height:100% }
+.agit__cell h5{ position:relative; z-index:1; font-size:26px; line-height:1.1; letter-spacing:-.03em; color:var(--text) }
+.agit__cell .body{ position:relative; z-index:1 }
+.agit__cell p + p{ margin-top:10px }
+
+/* ==========================================================================
+   Video
+   ========================================================================== */
+.video__head{ text-align:center; padding:0 40px 40px }
+.video__frame{ position:relative; width:100%; aspect-ratio:16/9; background:#000; cursor:pointer; overflow:hidden }
+.video__frame img{ width:100%; height:100%; object-fit:cover; transition:transform .8s var(--ease), opacity .4s }
+.video__frame:hover img{ transform:scale(1.03) }
+.video__play{ position:absolute; inset:0; display:grid; place-items:center; border:0; background:none; cursor:pointer }
+.video__play i{ width:84px; height:84px; border-radius:999px; background:var(--accent); display:grid; place-items:center;
+                box-shadow:0 0 0 12px rgba(255,182,6,.14); transition:.4s var(--ease) }
+.video__frame:hover .video__play i{ transform:scale(1.08); box-shadow:0 0 0 20px rgba(255,182,6,.12) }
+.video__play i::after{ content:""; width:0; height:0; margin-left:5px; border-left:20px solid #12181D; border-top:12px solid transparent; border-bottom:12px solid transparent }
+.video__frame iframe{ position:absolute; inset:0; width:100%; height:100%; border:0 }
+
+/* ==========================================================================
+   Kartice (benefiti / bonusi / video testimonijali)
+   ========================================================================== */
+.cards{ display:grid; gap:0; border-top:1px solid var(--line-strong) }
+.cards--4{ grid-template-columns:repeat(4,1fr) }
+.cards--3{ grid-template-columns:repeat(3,1fr) }
+.cards--2{ grid-template-columns:repeat(2,1fr) }
+
+.card{
+  position:relative; padding:44px 26px 34px; display:flex; flex-direction:column; gap:14px;
+  border-left:1px solid var(--line-strong); border-bottom:1px solid var(--line-strong);
+  background:var(--bg); box-shadow:inset 0 10px 40px 13px rgba(255,255,255,.02);
+  transition:background .5s var(--ease);
+  overflow:hidden;
+}
+.cards--4 .card:nth-child(4n+1),
+.cards--3 .card:nth-child(3n+1),
+.cards--2 .card:nth-child(2n+1){ border-left:0 }
+.card::before{
+  content:""; position:absolute; top:0; left:50%; transform:translateX(-50%);
+  width:190px; height:150px; opacity:0; transition:opacity .5s var(--ease);
+  background:radial-gradient(ellipse at top, rgba(255,182,6,.22), transparent 70%);
+}
+.card:hover::before{ opacity:1 }
+.card__ico{ width:44px; height:44px; display:grid; place-items:center; color:var(--accent) }
+.card__ico svg{ width:100%; height:100%; stroke:currentColor; fill:none; stroke-width:1.2 }
+.card h5{ position:relative; z-index:1 }
+.card p{ position:relative; z-index:1 }
+
+/* Brojači industrije */
+.counters{ display:grid; grid-template-columns:repeat(4,1fr) }
+.counter{ padding:38px 30px; border-left:1px solid var(--line-strong); display:flex; flex-direction:column; gap:10px; text-align:center; align-items:center }
+.counter:first-child{ border-left:0 }
+.counter__n{ font-family:var(--font-display); font-size:44px; line-height:1; letter-spacing:-.05em; color:var(--accent) }
+.counter p{ font-size:14px; color:var(--text-body) }
+
+/* ==========================================================================
+   Predavač
+   ========================================================================== */
+.tutor__row{ display:flex; align-items:stretch; gap:40px; padding:0 0 0 40px }
+.tutor__text{ position:relative; z-index:2; flex:1; display:flex; flex-direction:column; gap:26px; padding:70px 0 }
+.tutor__text .body + .body{ margin-top:0 }
+.tutor__img{ position:relative; z-index:1; width:470px; flex:none; align-self:stretch;
+             background:var(--panel) center/cover no-repeat;
+             -webkit-mask:linear-gradient(90deg, transparent 0%, #000 16%); mask:linear-gradient(90deg, transparent 0%, #000 16%) }
+
+/* ==========================================================================
+   Video testimonijali
+   ========================================================================== */
+.vcard{ position:relative; display:flex; flex-direction:column; justify-content:flex-end; min-height:330px;
+        border-left:1px solid var(--line-strong); border-bottom:1px solid var(--line-strong); padding:26px; overflow:hidden; cursor:pointer }
+.cards--3 .vcard:nth-child(3n+1){ border-left:0 }
+.vcard__thumb{ position:absolute; top:0; left:0; right:0; height:72%; z-index:0;
+  -webkit-mask:linear-gradient(0deg, transparent 0%, #000 46%); mask:linear-gradient(0deg, transparent 0%, #000 46%) }
+.vcard__thumb img{ width:100%; height:100%; object-fit:cover; transition:transform .9s var(--ease) }
+.vcard:hover .vcard__thumb img{ transform:scale(1.05) }
+.vcard__body{ position:relative; z-index:2; display:flex; align-items:flex-end; justify-content:space-between; gap:16px }
+.vcard__play{ width:44px; height:44px; flex:none; border-radius:999px; background:var(--accent); display:grid; place-items:center; transition:.4s var(--ease) }
+.vcard:hover .vcard__play{ transform:scale(1.1) }
+.vcard__play::after{ content:""; width:0; height:0; margin-left:3px; border-left:11px solid #12181D; border-top:7px solid transparent; border-bottom:7px solid transparent }
+.vcard iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; z-index:5 }
+
+/* ==========================================================================
+   Enciklopedija / paket
+   ========================================================================== */
+/* Kartice idu do ivica sekcije: negativne margine gase .pad-lg sa strana.
+   Naslagane su jedna na drugu, razdvaja ih samo 1px linija. */
+.offer-card{ display:flex; flex-direction:column; margin-inline:-40px;
+             border-top:1px solid var(--line-hair); border-bottom:1px solid var(--line-hair);
+             background:linear-gradient(180deg, rgba(255,255,255,.03) 0%, var(--bg) 100%) }
+/* Mockup ide punom duzinom kartice (izvor je 1442px, dovoljno za 1200) */
+.offer-card__media{ position:relative; display:grid; place-items:center; padding:36px 0 }
+.offer-card__media img{ width:100%; max-width:none; height:auto; object-fit:contain }
+.offer-card__list{ padding:40px; display:flex; flex-direction:column; gap:22px;
+                   border-top:1px solid var(--line-hair) }
+/* columns ne radi na flex kontejneru — lista mora da bude block */
+.offer-card__list .ticklist{ display:block; columns:2; column-gap:48px }
+.offer-card__list .ticklist li{ margin-bottom:12px }
+.ticklist{ display:flex; flex-direction:column; gap:12px }
+.ticklist li{ break-inside:avoid; -webkit-column-break-inside:avoid; display:flex; align-items:flex-start; gap:10px; font-size:16px; color:var(--text-body) }
+.tick{ flex:none; width:19px; height:19px; border-radius:999px; background:var(--accent); display:grid; place-items:center; margin-top:2px }
+.tick::after{ content:""; width:11px; height:11px; background:#12181D; -webkit-mask:var(--check) no-repeat center/contain; mask:var(--check) no-repeat center/contain }
+.tick--off{ background:var(--line-strong) }
+.tick--off::after{ background:rgba(255,255,255,.3) }
+
+/* ==========================================================================
+   Add-on kartice
+   ========================================================================== */
+.addon{ position:relative; display:block; border-left:1px solid var(--line-strong); border-bottom:1px solid var(--line-strong);
+        padding:40px; overflow:hidden }
+.cards--2 .addon:nth-child(2n+1){ border-left:0 }
+.addon img{ width:100%; height:auto; transition:transform .8s var(--ease) }
+.addon:hover img{ transform:scale(1.04) }
+.addon__foot{ display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:24px }
+.addon__foot span{ font-size:14px; letter-spacing:.06em; text-transform:uppercase; color:var(--text-body) }
+.addon:hover .addon__foot span{ color:var(--accent) }
+
+/* ==========================================================================
+   Akordeon (kurikulum + FAQ)
+   ========================================================================== */
+.split{ display:flex; align-items:flex-start; gap:0 }
+.split__left{ flex:.6; align-self:stretch; padding:40px; border-right:1px solid var(--line) }
+.split__sticky{ position:sticky; top:110px; display:flex; flex-direction:column; gap:24px }
+.split__right{ flex:1; padding:40px }
+
+.acc{ border-top:1px solid var(--line) }
+.acc__item{ border-bottom:1px solid var(--line) }
+.acc__btn{ width:100%; display:flex; align-items:flex-start; gap:15px; justify-content:space-between;
+           background:none; border:0; padding:26px 4px; text-align:left; cursor:pointer; color:#fff; font-size:18px; line-height:1.5 }
+.acc__btn:hover{ color:var(--accent) }
+.acc__sign{ position:relative; flex:none; width:24px; height:24px; margin-top:4px }
+.acc__sign i{ position:absolute; top:50%; left:50%; width:12px; height:2px; background:currentColor; transform:translate(-50%,-50%); transition:transform .45s var(--ease) }
+.acc__sign i:last-child{ transform:translate(-50%,-50%) rotate(90deg) }
+.acc__item.is-open .acc__sign i:last-child{ transform:translate(-50%,-50%) rotate(0deg) }
+.acc__item.is-open .acc__btn{ color:var(--accent) }
+.acc__panel{ display:grid; grid-template-rows:0fr; transition:grid-template-rows .5s var(--ease) }
+.acc__item.is-open .acc__panel{ grid-template-rows:1fr }
+.acc__panel > div{ overflow:hidden }
+.acc__panel .inner{ padding:0 44px 28px 4px; color:var(--text-body); font-size:16px }
+.acc__panel .inner li{ padding:7px 0; border-bottom:1px solid rgba(255,255,255,.05) }
+.acc__panel .inner li:last-child{ border-bottom:0 }
+.acc__panel .inner a{ color:var(--accent) }
+
+/* ==========================================================================
+   Google recenzije
+   ========================================================================== */
+.rev__top{ display:flex; align-items:center; gap:20px; flex-wrap:wrap; padding:0 0 34px }
+.rev__score{ display:flex; align-items:center; gap:14px; border:1px solid var(--line-hair); padding:16px 22px }
+.rev__score b{ font-family:var(--font-display); font-size:34px; line-height:1; color:var(--accent); font-weight:400 }
+.stars{ display:flex; gap:4px }
+.stars i{ width:11px; height:11px; background:var(--accent); display:block;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9.289 9'%3E%3Cpath d='M4.645 7.54 2.393 8.916a.6.6 0 0 1-.597-.028.7.7 0 0 1-.216-.6l.596-2.6L.182 3.977a.6.6 0 0 1-.169-.284.6.6 0 0 1 .02-.308.6.6 0 0 1 .163-.248.6.6 0 0 1 .298-.124l2.631-.233L4.143.331A.6.6 0 0 1 4.354.082.6.6 0 0 1 4.645 0a.6.6 0 0 1 .29.082.6.6 0 0 1 .211.248l1.018 2.449 2.631.234a.6.6 0 0 1 .298.124.6.6 0 0 1 .163.248.62.62 0 0 1-.149.592L7.112 5.724l.597 2.6a.7.7 0 0 1-.027.324.7.7 0 0 1-.189.24.6.6 0 0 1-.286.11.6.6 0 0 1-.312-.082Z' fill='%23000'/%3E%3C/svg%3E") no-repeat center/contain;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9.289 9'%3E%3Cpath d='M4.645 7.54 2.393 8.916a.6.6 0 0 1-.597-.028.7.7 0 0 1-.216-.6l.596-2.6L.182 3.977a.6.6 0 0 1-.169-.284.6.6 0 0 1 .02-.308.6.6 0 0 1 .163-.248.6.6 0 0 1 .298-.124l2.631-.233L4.143.331A.6.6 0 0 1 4.354.082.6.6 0 0 1 4.645 0a.6.6 0 0 1 .29.082.6.6 0 0 1 .211.248l1.018 2.449 2.631.234a.6.6 0 0 1 .298.124.6.6 0 0 1 .163.248.62.62 0 0 1-.149.592L7.112 5.724l.597 2.6a.7.7 0 0 1-.027.324.7.7 0 0 1-.189.24.6.6 0 0 1-.286.11.6.6 0 0 1-.312-.082Z' fill='%23000'/%3E%3C/svg%3E") no-repeat center/contain }
+.rev{ position:relative; padding:34px 30px; border-left:1px solid var(--line-strong); border-bottom:1px solid var(--line-strong); display:flex; flex-direction:column; gap:16px }
+.cards--3 .rev:nth-child(3n+1){ border-left:0 }
+.rev__who{ display:flex; align-items:center; gap:12px }
+.rev__av{ width:38px; height:38px; border-radius:999px; background:var(--panel); border:1px solid var(--line-hair); display:grid; place-items:center;
+          font-family:var(--font-display); font-size:15px; color:var(--accent) }
+.rev__meta b{ display:block; font-weight:400; font-size:15px }
+.rev__meta span{ font-size:13px; color:var(--text-muted) }
+.rev__txt{ font-size:15px; color:var(--text-body) }
+
+/* ==========================================================================
+   Ponuda + countdown (pricing pattern)
+   ========================================================================== */
+/* Puna sirina sekcije: samo gornja i donja linija */
+.price{ position:relative; margin-inline:-40px; overflow:hidden;
+        border-top:1px solid var(--line-strong); border-bottom:1px solid var(--line-strong) }
+.price__glow{ position:absolute; z-index:0; width:110px; height:90px; top:0; left:30px;
+              background:radial-gradient(ellipse at top, rgba(255,182,6,.38), transparent 70%); filter:blur(8px) }
+.price__mark{ position:absolute; z-index:0; top:-12px; right:-12px; width:112px; height:112px; opacity:.5 }
+.price__top{ position:relative; z-index:1; padding:40px; display:flex; flex-direction:column; gap:26px; border-bottom:1px solid var(--line-strong) }
+.price__top > .btn:not(.btn--block),
+.cta__wrap .btn:not(.btn--block){ align-self:flex-start }
+/* Mockup ide punom sirinom kartice; linija ga deli od liste */
+.price__bottom{ position:relative; z-index:1; padding:0; background:linear-gradient(231deg, rgba(255,182,6,.10) 0%, rgba(171,171,171,0) 100%) }
+.price__bottom > .ticklist{ padding:40px }
+.price__media{ padding:36px 0; display:grid; place-items:center; border-bottom:1px solid var(--line-strong) }
+.price__media img{ width:100%; max-width:none; height:auto }
+.price__list{ padding:40px }
+.price__list .ticklist{ display:block; columns:2; column-gap:48px }
+.price__list .ticklist li{ margin-bottom:12px }
+.price__row{ display:flex; align-items:flex-end; gap:8px; flex-wrap:wrap }
+.price__old{ font-size:18px; color:var(--text-muted); text-decoration:line-through }
+.price__now{ font-size:54px; font-weight:600; letter-spacing:-.05em; line-height:1.1; color:var(--accent) }
+.price__per{ font-size:18px; color:var(--text-muted) }
+.pill{ display:inline-flex; align-items:center; padding:3px 12px; border-radius:999px; background:var(--accent-soft);
+       color:var(--accent); font-size:12px; letter-spacing:.06em; text-transform:uppercase }
+
+.count{ display:flex; gap:10px; flex-wrap:wrap }
+.count__u{ flex:1; min-width:86px; border:1px solid var(--line-strong); padding:16px 10px; text-align:center;
+           background:linear-gradient(180deg, rgba(255,255,255,.03), transparent) }
+.count__u b{ display:block; font-family:var(--font-display); font-size:34px; line-height:1; letter-spacing:-.05em; font-weight:400 }
+.count__u span{ font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--text-muted) }
+
+.promo{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; font-size:14px; color:var(--text-body) }
+.promo code{ font-family:var(--font-body); letter-spacing:.14em; padding:5px 12px; border:1px dashed var(--accent); color:var(--accent) }
+
+/* ==========================================================================
+   Phone testimonials — marquee
+   ========================================================================== */
+.pmarq{ overflow:hidden; padding:70px 0; position:relative }
+.pmarq::before,.pmarq::after{ content:""; position:absolute; top:0; bottom:0; width:160px; z-index:2; pointer-events:none }
+.pmarq::before{ left:0; background:linear-gradient(90deg,var(--bg),transparent) }
+.pmarq::after{ right:0; background:linear-gradient(270deg,var(--bg),transparent) }
+.pmarq__track{ display:flex; gap:48px; width:max-content; animation:marquee 64s linear infinite }
+/* Na desktopu su telefoni krupni i kadrirani na gornji deo poruke, pa u
+   kadar staju ~2.5 komada — traka uvek ima sta da uvuce sa strane umesto
+   da sva 4 mockupa stoje na ekranu sve vreme. Dno se gubi u fade. */
+.pmarq img{ width:400px; height:560px; flex:none; object-fit:cover; object-position:center top;
+  -webkit-mask:linear-gradient(0deg, transparent 0%, #000 20%); mask:linear-gradient(0deg, transparent 0%, #000 20%) }
+.pmarq:hover .pmarq__track{ animation-play-state:paused }
+
+/* ==========================================================================
+   Poređenje
+   ========================================================================== */
+.vs{ display:grid; grid-template-columns:1fr 1fr; border-top:1px solid var(--line-strong) }
+.vs__col{ padding:44px 36px; border-left:1px solid var(--line-strong); display:flex; flex-direction:column; gap:24px }
+.vs__col:first-child{ border-left:0 }
+.vs__col--win{ background:linear-gradient(231deg, rgba(255,182,6,.09) 0%, rgba(171,171,171,0) 100%) }
+.vs__amount{ font-family:var(--font-display); font-size:46px; line-height:1; letter-spacing:-.05em }
+.vs__col--win .vs__amount{ color:var(--accent) }
+.vs__note{ font-size:14px; color:var(--text-muted) }
+.vs__list li{ display:flex; align-items:flex-start; gap:10px; padding:9px 0; border-bottom:1px solid rgba(255,255,255,.06); font-size:15px; color:var(--text-body) }
+.vs__list li:last-child{ border-bottom:0 }
+.vs__sign{ flex:none; width:19px; height:19px; border-radius:999px; display:grid; place-items:center; font-size:13px; line-height:1; margin-top:1px }
+.vs__sign--minus{ background:var(--line-strong); color:rgba(255,255,255,.4) }
+.vs__sign--plus{ background:var(--accent); color:#12181D }
+
+/* ==========================================================================
+   Garancija
+   ========================================================================== */
+.guard{ display:flex; align-items:center; gap:44px }
+.guard__badge{ width:200px; flex:none }
+.guard__badge img{ width:100%; height:auto }
+.guard__txt{ display:flex; flex-direction:column; gap:18px }
+
+/* ==========================================================================
+   Finalni CTA
+   ========================================================================== */
+.cta .rail{ padding:100px 40px }
+.cta__wrap{ position:relative; z-index:2; display:flex; flex-direction:column; align-items:center; gap:34px; max-width:760px; margin-inline:auto; text-align:center }
+.cta__btns{ display:flex; gap:14px; flex-wrap:wrap; justify-content:center }
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.foot{ position:relative; border-bottom:0 }
+.foot .rail{ padding:80px 40px 240px }
+.foot__top{ position:relative; z-index:2; display:flex; justify-content:space-between; gap:60px; flex-wrap:wrap }
+.foot__news{ width:46%; min-width:300px; display:flex; flex-direction:column; gap:24px }
+.foot__mail{ display:flex; align-items:center; gap:10px; border-bottom:1px solid var(--line-strong); padding-right:20px; max-width:340px }
+.foot__mail input{ flex:1; background:none; border:0; outline:0; padding:15px 2px; font-size:16px; color:#fff }
+.foot__mail input::placeholder{ color:var(--text-muted) }
+.foot__mail i{ width:16px; height:15px; background:var(--text-muted); flex:none;
+  -webkit-mask:var(--arrow) no-repeat center/contain; mask:var(--arrow) no-repeat center/contain }
+.foot__cols{ display:flex; gap:60px; flex-wrap:wrap }
+.foot__col{ display:flex; flex-direction:column; gap:20px; min-width:150px }
+.foot__col h6{ margin:0; font-size:18px; font-weight:400; color:#fff }
+.foot__col a,.foot__col p{ font-size:16px; color:var(--text-muted); transition:color .3s var(--ease) }
+.foot__col a:hover{ color:#fff }
+.soc{ display:flex; align-items:center; gap:7px; padding:0 1px }
+.soc i{ width:22px; height:22px; flex:none; border-radius:999px; border:1px solid var(--line-hair); display:grid; place-items:center;
+        font-size:10px; color:var(--text-muted); transition:.3s var(--ease) }
+.soc:hover i{ border-color:var(--accent); color:var(--accent) }
+.foot__pay{ position:relative; z-index:2; display:flex; align-items:center; gap:18px; flex-wrap:wrap; padding-top:34px; margin-top:44px; border-top:1px solid var(--line) }
+.foot__pay span{ font-size:13px; letter-spacing:.06em; text-transform:uppercase; color:var(--text-muted) }
+.foot__pay b{ font-size:13px; font-weight:400; letter-spacing:.04em; color:var(--text-muted); border:1px solid var(--line-strong); padding:6px 12px }
+.foot__low{ position:relative; z-index:2; display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap;
+            padding-top:30px; margin-top:30px; border-top:1px solid var(--line) }
+.foot__low a,.foot__low p{ font-size:16px; color:var(--text-muted) }
+.foot__low a:hover{ color:#fff }
+.foot__mark{ position:absolute; z-index:1; bottom:34px; left:50%; transform:translateX(-50%); width:min(880px,88%); opacity:.13 }
+.foot__mark img{ width:100%; height:auto }
+
+/* ==========================================================================
+   Scroll reveal
+   ========================================================================== */
+[data-reveal]{ opacity:0; transform:translateY(10px); transition:opacity var(--dur) var(--ease), transform var(--dur) var(--ease) }
+[data-reveal="up"]   { transform:translateY(-10px) }
+[data-reveal="left"] { transform:translateX(-10px) }
+[data-reveal].is-in{ opacity:1; transform:none }
+[data-delay="1"]{ transition-delay:.08s } [data-delay="2"]{ transition-delay:.16s }
+[data-delay="3"]{ transition-delay:.24s } [data-delay="4"]{ transition-delay:.32s }
+[data-delay="5"]{ transition-delay:.40s } [data-delay="6"]{ transition-delay:.48s }
+[data-delay="7"]{ transition-delay:.56s } [data-delay="8"]{ transition-delay:.64s }
+
+@media (prefers-reduced-motion:reduce){
+  *{ animation-duration:.001ms !important; transition-duration:.001ms !important }
+  [data-reveal]{ opacity:1; transform:none }
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+@media (max-width:1199px){
+  h1,.h1{ font-size:75px } h2,.h2{ font-size:45px } h3,.h3{ font-size:25px }
+  .offer-card__list .ticklist,.price__list .ticklist{ columns:1 }
+  .agit__grid{ grid-template-columns:repeat(2,1fr) }
+  .agit__cell:nth-child(2n+1){ border-left:0 }
+  .agit__cell:nth-child(n+3){ border-top:1px solid var(--line-strong) }
+  .agit__cell h5{ font-size:24px }
+  .cards--4{ grid-template-columns:repeat(2,1fr) }
+  .cards--4 .card:nth-child(4n+1){ border-left:1px solid var(--line-strong) }
+  .cards--4 .card:nth-child(2n+1){ border-left:0 }
+  .counters{ grid-template-columns:repeat(2,1fr) }
+  .counter:nth-child(3){ border-left:0 }
+  .counter{ border-bottom:1px solid var(--line-strong) }
+  .tutor__img{ width:360px }
+  .nav__links,.pulse{ display:none }
+  .burger{ display:flex }
+}
+@media (max-width:809px){
+  .hero h1{ font-size:clamp(30px, 9.6vw, 44px); line-height:1.16 }
+  .hero h1 span{ white-space:normal }
+  h1,.h1{ font-size:clamp(30px, 9.6vw, 44px) } h2,.h2{ font-size:clamp(26px, 7.4vw, 35px) } h3,.h3{ font-size:23px }
+  h1,h2,h3,h5{ overflow-wrap:anywhere }
+  .pad{ padding:60px 20px } .pad-lg{ padding:70px 20px }
+  .hero .rail{ padding:64px 20px 56px; gap:40px }
+  .rail{ border-left:0; border-right:0 }
+  .agit__grid,.cards--4,.cards--3,.cards--2,.counters,.vs{ grid-template-columns:1fr }
+  .card,.vcard,.rev,.addon,.counter,.vs__col{ border-left:0 !important; border-bottom:1px solid var(--line-strong) }
+  .agit__grid{ margin:44px -20px -60px }
+  .agit__cell{ padding:44px 22px 40px; border-left:0 }
+  .agit__cell + .agit__cell{ border-top:1px solid var(--line-strong) }
+  .agit__ico{ width:92px; height:92px }
+  .agit__cell h5{ font-size:23px }
+  .tutor__row{ flex-direction:column; padding:0 }
+  .tutor__text{ padding:60px 20px 0 }
+  /* center/cover je na 320px visine secao lice — kadriramo uz gornju trecinu */
+  .tutor__img{ width:100%; height:380px; background-position:center 8%;
+               -webkit-mask:linear-gradient(0deg, transparent 0%, #000 22%); mask:linear-gradient(0deg, transparent 0%, #000 22%) }
+  .offer-card{ margin-inline:-20px }
+  .offer-card__media{ padding:24px 0 }
+  .offer-card__list{ padding:30px 22px }
+  .offer-card__list .ticklist{ display:flex; columns:auto }
+  .price{ margin-inline:-20px }
+  .price__media{ padding:22px 0 }
+  .price__list{ padding:26px 22px }
+  .price__bottom > .ticklist{ padding:26px 22px }
+  .price__list .ticklist{ display:flex; columns:auto }
+  .split{ flex-direction:column }
+  .split__left{ border-right:0; border-bottom:1px solid var(--line); padding:0 20px 30px } .split__sticky{ position:static }
+  .split__right{ padding:30px 20px }
+  .guard{ flex-direction:column; text-align:center } .guard__badge{ width:160px }
+  .foot .rail{ padding:60px 20px 180px }
+  .foot__news{ width:100% }
+  .foot__cols{ gap:40px }
+  /* Na telefonu ostaje kako je bilo: cela slika, bez kadriranja */
+  .pmarq img{ width:190px; height:auto; object-fit:fill; -webkit-mask:none; mask:none }
+  .pmarq__track{ gap:28px }
+  .video__head{ padding:0 20px 28px }
+  .signup{ padding:22px }
+  .price__top{ padding:26px 22px }
+  .count__u{ min-width:70px }
+}
+
+/* Fallback link kada je Vimeo embed zaključan na drugi domen (ne vidi se na my-cer.com) */
+.vfallback{
+  position:absolute; z-index:9; left:0; right:0; bottom:0;
+  padding:12px 16px; text-align:center;
+  background:rgba(14,18,22,.92); border-top:1px solid var(--accent);
+  color:var(--accent); font-size:13px; letter-spacing:.04em;
+}
+.vfallback:hover{ background:var(--accent); color:#12181D }
